@@ -27,8 +27,8 @@ if (count($items)) {
 		// create a new FC object for the item
 		$itemmodel = new FlexicontentModelItem();
 		$item = $itemmodel -> getItem($id, false);
-		$items = array($item);
-		FlexicontentFields::getFields($items, 'module', $skip_params = null);
+		$itemslist = array($item);
+		FlexicontentFields::getFields($itemslist, 'module');
 		
 		// generate item url
 		$item_link = JRoute::_(FlexicontentHelperRoute::getItemRoute($item -> slug, $item -> categoryslug));
@@ -52,35 +52,27 @@ if (count($items)) {
 					// Image
 					if($params -> get('image_field') != '') {
 						
-						// process image field
-						FlexicontentFields::getFieldDisplay($item, $params -> get('image_field'));
-						
 						// if there is image content
 						if (isset($item -> fieldvalues[$item -> fields[$params -> get('image_field')] -> id])) {
+							FlexicontentFields::getFieldDisplay($item, $params -> get('image_field'));
+							$xmlDoc = new DOMDocument();
+							$xmlDoc -> loadXML($item -> fields[$params -> get('image_field')] -> display);
+							$image_src = $xmlDoc -> getElementsByTagName('img') -> item(0) -> getAttribute('src');
 							
-							// custom image size
-							if ($params -> get('image_size') == 'custom') {
-								// custom size image
-								$image_field = unserialize($item -> fieldvalues[$item -> fields[$params -> get('image_field')] -> id][0]);
-								$image_file = JPATH_SITE . DS . 'images' . DS . 'stories' . DS . 'flexicontent' . DS . 'l_' . $image_field['originalname'];
-								$conf = '&amp;w=' . $params -> get('image_width') . '&amp;h=' . $params -> get('image_height') . '&amp;aoe=1&amp;q=95';
-								$conf .= $params -> get('image_resize') ? '&amp;zc=' . $params -> get('image_resize') : '';
-								$ext = pathinfo($image_file, PATHINFO_EXTENSION);
-								$conf .= in_array($ext, array('png', 'ico', 'gif')) ? '&amp;f=' . $ext : '';
-								$image_src = JURI::base() . 'components/com_flexicontent/librairies/phpthumb/phpThumb.php?src=' . $image_file . $conf;
-								$item_image = '<img src="' . $image_src . '" alt="' . $image_field['alt'] . '" title="' . $image_field['title'] . '" /></a>';
-							} 
-							// standard thumbnail
-							else {
-								$image_field = unserialize($item -> fieldvalues[$item -> fields[$params -> get('image_field')] -> id][0]);
-								$image_src = JURI::base() . 'images/stories/flexicontent/' . $params -> get('image_size') . '_' . $image_field['originalname'];
-								$item_image = '<img src="' . $image_src . '" alt="' . $image_field['alt'] . '" title="' . $image_field['title'] . '" /></a>';
-							}
+							$display .= '<div class="image ' . ($params -> get('image_align') != 'none' ? $params -> get('image_align') : '') . ' ' . $params -> get('image_class') . '">';
+							
 							// make image clickable?
 							if ($params -> get('image_link', 1)) {
-								$item_image = '<a href="' . $item_link . '">' . $item_image . '</a>';
+								$display .= '<a href="' . $item_link . '">';
 							}
-							$display .= '<div class="image ' . ($params -> get('image_align') != 'none' ? $params -> get('image_align') : '') . ' ' . $params -> get('image_class') . '">' . $item_image . '</div>';
+
+							$display .= '<img src="' . $image_src . '" />';
+							
+							if ($params -> get('image_link', 1)) {
+								$display .= '</a>';
+							}
+							
+							$display .= '</div>';
 						}
 					}
 					
@@ -92,9 +84,7 @@ if (count($items)) {
 					// first get the item title (just in case)
 					$item_title = $item -> title;
 					
-					// process the title field if different to title field (confusing?)
-					FlexicontentFields::getFieldDisplay($item, $params -> get('title_field'));
-					if ($params -> get('title_field', 'title') != 'title' && $item -> fieldvalues[$item -> fields[$params -> get('title_field')] -> id]) {
+					if ($params -> get('title_field', 'title') != 'title' && array_key_exists($item -> fields[$params -> get('title_field')] -> id, $item -> fieldvalues)) {
 						// check what kind of field we are using
 						switch($item->fields[$params->get('title_field')]->field_type) {
 							// for item relations, get the title of the related item
@@ -149,8 +139,6 @@ if (count($items)) {
 					
 					// not default text?
 					if ($params -> get('introtext_field', 'text') != 'text') {
-						// process field used for intro text
-						FlexicontentFields::getFieldDisplay($item, $params -> get('introtext_field'));
 						if (isset($item -> fieldvalues[$item -> fields[$params -> get('introtext_field')] -> id])) {
 							FlexicontentFields::getFieldDisplay($item, $params -> get('introtext_field'), $values = null, $method = 'display');
 							$item_introtext = $item -> fields[$params -> get('introtext_field')] -> display;
