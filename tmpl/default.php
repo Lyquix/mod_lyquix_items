@@ -1,16 +1,17 @@
 <?php // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-// load required FLEXIcontent libraries
-require_once (JPATH_ADMINISTRATOR.DS.'components/com_flexicontent/defineconstants.php');
-JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_flexicontent'.DS.'tables');
-require_once("components/com_flexicontent/classes/flexicontent.fields.php");
-require_once("components/com_flexicontent/classes/flexicontent.helper.php");
-require_once("components/com_flexicontent/helpers/permission.php");
-require_once("components/com_flexicontent/models/".FLEXI_ITEMVIEW.".php");
-
 // are there any items to show?
 if (count($items)) {
+	
+	// load required FLEXIcontent libraries
+	require_once (JPATH_ADMINISTRATOR.DS.'components/com_flexicontent/defineconstants.php');
+	JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_flexicontent'.DS.'tables');
+	require_once("components/com_flexicontent/classes/flexicontent.fields.php");
+	require_once("components/com_flexicontent/classes/flexicontent.helper.php");
+	require_once("components/com_flexicontent/helpers/permission.php");
+	require_once("components/com_flexicontent/models/".FLEXI_ITEMVIEW.".php");
+	
 	echo '<div class="module mod_lyquix_items' . $params -> get('moduleclass_sfx') . '">';
 	// module pre-text
 	echo $params -> get('modpretxt');
