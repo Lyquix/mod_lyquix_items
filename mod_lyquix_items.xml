@@ -2,13 +2,13 @@
 <extension type="module" version="2.5" client="site" method="upgrade">
 	<name>Lyquix Items</name>
 	<author>Lyquix</author>
-	<creationDate>01/20/2013</creationDate>
+	<creationDate>15 Oct 2015</creationDate>
 	<copyright>(c) Lyquix</copyright>
 	<license></license>
 	<authorEmail>info@lyquix.com</authorEmail>
 	<authorUrl>http://www.lyquix.com</authorUrl>
-	<version>1.0</version>
-	<description>Generates a list of FlexiContent Items</description>
+	<version>2.0.0</version>
+	<description>Generates a list of FLEXIcontent Items</description>
 	<files>
 		<filename>mod_lyquix_items.xml</filename>
 		<filename module="mod_lyquix_items">mod_lyquix_items.php</filename>
@@ -21,7 +21,7 @@
 		<language tag="en-GB">en-GB.mod_lyquix_items.ini</language>
 	</languages>
 	<config>
-		<fields name="params" addfieldpath="/modules/mod_lyquix_items/elements">
+		<fields name="params" addfieldpath="modules/mod_lyquix_items/elements">
 			<fieldset name="basic">
 				<field name="" type="separator" default="MOD_LYQUIX_ITEMS_LIST" level="level1" menu="hide" />
 				<field name="cats_scope" type="radio" default="0" label="MOD_LYQUIX_ITEMS_CAT_SCOPE" description="MOD_LYQUIX_ITEMS_CAT_SCOPE_DESC">
@@ -54,11 +54,8 @@
 				</field>
 			</fieldset>
 			<fieldset name="MOD_LYQUIX_ITEMS_DISPLAY_PARAMS" label="MOD_LYQUIX_ITEMS_DISPLAY_PARAMS">
+				<field name="layout_order" type="lqxmoditemslayout"  options="image,title,date,author,intro,fields,readmore" default="image,title,date,author,intro,fields,readmore" label="MOD_LYQUIX_ITEMS_LAYOUT_ORDER" description="MOD_LYQUIX_ITEMS_LAYOUT_ORDER_DESC" />
 				<field name="" type="separator" default="MOD_LYQUIX_ITEMS_TITLE" level="level1" menu="hide" />
-				<field name="title_display" type="radio" default="1" label="MOD_LYQUIX_ITEMS_DISPLAY_TITLE" description="MOD_LYQUIX_ITEMS_DISPLAY_TITLE_DESC">
-					<option value="0">MOD_LYQUIX_ITEMS_NO</option>
-					<option value="1">MOD_LYQUIX_ITEMS_YES</option>
-				</field>
 				<field name="title_field" type="fields" default="title" field_type="title,text,textarea,textselect,select,selectmultiple,checkbox,checkboximage,radio,radioimage,relateditems,relateditems_advanced" fieldnameasvalue="name" label="MOD_LYQUIX_ITEMS_TITLE_FIELD" description="MOD_LYQUIX_ITEMS_TITLE_FIELD_DESC" />
 				<field name="title_heading_level" type="list" default="3" label="MOD_LYQUIX_ITEMS_TITLE_HEADING" description="MOD_LYQUIX_ITEMS_TITLE_HEADING_DESC">
 					<option value="1">H1</option>
@@ -74,10 +71,6 @@
 				</field>
 				<field name="title_length" type="text" default="100" size="4" label="MOD_LYQUIX_ITEMS_MAX_TITLE_LENGTH" description="MOD_LYQUIX_ITEMS_MAX_TITLE_LENGTH_DESC" />
 				<field name="" type="separator" default="MOD_LYQUIX_ITEMS_DATE_PARAMS" level="level1" menu="hide" />
-				<field name="date_display" type="radio" default="1" label="MOD_LYQUIX_ITEMS_DISPLAY_DATE" description="MOD_LYQUIX_ITEMS_DISPLAY_DATE_DESC" >
-					<option value="0">MOD_LYQUIX_ITEMS_NO</option>
-					<option value="1">MOD_LYQUIX_ITEMS_YES</option>
-				</field>
 				<field name="date_fields" type="radio" default="created" label="MOD_LYQUIX_ITEMS_DISPLAY_DATE_TYPE" description="MOD_LYQUIX_ITEMS_DISPLAY_DATE_TYPE_DESC">
 					<option value="created">MOD_LYQUIX_ITEMS_DATE_CREATED</option>
 					<option value="modified">MOD_LYQUIX_ITEMS_DATE_MODIFIED</option>
@@ -93,23 +86,11 @@
 				<field name="date_custom" type="text" default="" label="MOD_LYQUIX_ITEMS_CUSTOM_DATE_FORMAT" description="MOD_LYQUIX_ITEMS_CUSTOM_DATE_FORMAT_DESC" />
 				<field name="date_label" type="text" default="" label="MOD_LYQUIX_ITEMS_DATE_LABEL" description="MOD_LYQUIX_ITEMS_DATE_LABEL_DESC" filter="raw" />
 				<field name="" type="separator" default="MOD_LYQUIX_ITEMS_AUTHOR_PARAMS" level="level1" menu="hide" />
-				<field name="author_display" type="radio" default="1" label="MOD_LYQUIX_ITEMS_DISPLAY_AUTHOR" description="MOD_LYQUIX_ITEMS_DISPLAY_AUTHOR_DESC" >
-					<option value="0">MOD_LYQUIX_ITEMS_NO</option>
-					<option value="1">MOD_LYQUIX_ITEMS_YES</option>
-				</field>
 				<field name="author_label" type="text" default="" label="MOD_LYQUIX_ITEMS_AUTHOR_LABEL" description="MOD_LYQUIX_ITEMS_AUTHOR_LABEL_DESC" filter="raw" />
 				<field name="" type="separator" default="MOD_LYQUIX_ITEMS_INTRO_PARAMS" level="level1" menu="hide" />
-				<field name="introtext_display" type="radio" default="1" label="MOD_LYQUIX_ITEMS_DISPLAY_INTRO" description="MOD_LYQUIX_ITEMS_DISPLAY_TEXT_INTRO">
-					<option value="0">MOD_LYQUIX_ITEMS_NO</option>
-					<option value="1">MOD_LYQUIX_ITEMS_YES</option>
-				</field>
 				<field name="introtext_field" type="fields" default="" field_type="maintext,text,textarea" fieldnameasvalue="name" label="MOD_LYQUIX_ITEMS_INTRO_FIELD" description="MOD_LYQUIX_ITEMS_INTRO_FIELD_DESC" />
 				<field name="introtext_length" type="text" size="4" default="200" label="MOD_LYQUIX_ITEMS_MAX_INTRO_LENGTH" description="MOD_LYQUIX_ITEMS_MAX_INTRO_LENGTH_DESC" />
 				<field name="" type="separator" default="MOD_LYQUIX_ITEMS_IMAGE_PARAMS" level="level1" menu="hide" />
-				<field name="image_display" type="radio" default="1" label="MOD_LYQUIX_ITEMS_IMAGE_DISPLAY" description="MOD_LYQUIX_ITEMS_IMAGE_DISPLAY_DESC">
-					<option value="0">MOD_LYQUIX_ITEMS_NO</option>
-					<option value="1">MOD_LYQUIX_ITEMS_YES</option>
-				</field>
 				<field name="image_field" type="fcimage" valcolumn="name" default="" label="MOD_LYQUIX_ITEMS_IMAGE_SOURCE" description="MOD_LYQUIX_ITEMS_IMAGE_SOURCE_DESC" />
 				<field name="image_link" type="radio" default="1" label="MOD_LYQUIX_ITEMS_LINK_IMAGE" description="MOD_LYQUIX_ITEMS_LINK_IMAGE_DESC">
 					<option value="0">MOD_LYQUIX_ITEMS_NO</option>
@@ -137,43 +118,27 @@
 					<option value="0">MOD_LYQUIX_ITEMS_NO</option>
 					<option value="1">MOD_LYQUIX_ITEMS_YES</option>
 				</field>
-				<field name="fields" type="textarea" default="" label="MOD_LYQUIX_ITEMS_FIELDS" description="MOD_LYQUIX_ITEMS_FIELDS_DESC" />
+				<field name="fields" type="fields" multiple="multiple" sortable="sortable" default="" label="MOD_LYQUIX_ITEMS_FIELDS" description="MOD_LYQUIX_ITEMS_FIELDS_DESC" />
 				<field name="" type="separator" default="MOD_LYQUIX_ITEMS_READMORE_PARAMS" level="level1" menu="hide" />
-				<field name="readmore_display" type="radio" default="1" label="MOD_LYQUIX_ITEMS_READMORE" description="MOD_LYQUIX_ITEMS_READMORE_DESC">
-					<option value="0">MOD_LYQUIX_ITEMS_NO</option>
-					<option value="1">MOD_LYQUIX_ITEMS_YES</option>
-				</field>
 				<field name="readmore_label" type="text" default="Read More" label="MOD_LYQUIX_ITEMS_READMORE_LABEL" description="MOD_LYQUIX_ITEMS_READMORE_LABEL_DESC" filter="raw" />
-				<field name="" type="separator" default="MOD_LYQUIX_ITEMS_POSITION_PARAMS" level="level1" menu="hide" />
-				<field name="position_titledateauthor" type="list" default="tda" label="MOD_LYQUIX_ITEMS_POSITION_TITLEDATEAUTHOR" description="MOD_LYQUIX_ITEMS_POSITION_TITLEDATEAUTHOR_DESC" >
-					<option value="tda">Title - Date - Author</option>
-					<option value="tad">Title - Author Date</option>
-					<option value="dta">Date - Title - Author</option>
-					<option value="dat">Date - Author - Title</option>
-					<option value="atd">Author - Title - Date</option>
-					<option value="adt">Author - Date - Title</option>
-				</field>
-				<field name="position_fields" type="list" default="readmore" label="MOD_LYQUIX_ITEMS_POSITION_FIELDS" description="MOD_LYQUIX_ITEMS_POSITION_FIELDS_DESC" >
-					<option value="title">MOD_LYQUIX_ITEMS_POSITION_TITLE</option>
-					<option value="introtext">MOD_LYQUIX_ITEMS_POSITION_INTRO</option>
-					<option value="readmore">MOD_LYQUIX_ITEMS_POSITION_READMORE</option>
-					<option value="end">MOD_LYQUIX_ITEMS_POSITION_END</option>
-				</field>
-				<field name="position_image" type="list" default="title" label="MOD_LYQUIX_ITEMS_POSITION_IMAGE" description="MOD_LYQUIX_ITEMS_POSITION_IMAGE_DESC" >
-					<option value="title">MOD_LYQUIX_ITEMS_POSITION_TITLE</option>
-					<option value="introtext">MOD_LYQUIX_ITEMS_POSITION_INTRO</option>
-					<option value="fields">MOD_LYQUIX_ITEMS_POSITION_FIELDS</option>
-					<option value="readmore">MOD_LYQUIX_ITEMS_POSITION_READMORE</option>
-					<option value="end">MOD_LYQUIX_ITEMS_POSITION_END</option>
-				</field>
 			</fieldset>
 			<fieldset name="MOD_LYQUIX_ITEMS_ADVANCED" label="MOD_LYQUIX_ITEMS_ADVANCED">
 				<field name="" type="separator" default="MOD_LYQUIX_ITEMS_MODULE_STYLING" level="level1" menu="hide" />
 				<field name="moduleclass_sfx" type="text" default="" label="MOD_LYQUIX_ITEMS_MODULE_CLASS_SUFFIX" description="MOD_LYQUIX_ITEMS_MODULE_CLASS_SUFFIX_DESC" />
+				<field name="title_class" type="text" default="" label="MOD_LYQUIX_TITLE_CLASS" description="MOD_LYQUIX_TITLE_CLASS_DESC" />
+				<field name="date_class" type="text" default="" label="MOD_LYQUIX_DATE_CLASS" description="MOD_LYQUIX_DATE_CLASS_DESC" />
+				<field name="author_class" type="text" default="" label="MOD_LYQUIX_AUTHOR_CLASS" description="MOD_LYQUIX_AUTHOR_CLASS_DESC" />
+				<field name="intro_class" type="text" default="" label="MOD_LYQUIX_INTRO_CLASS" description="MOD_LYQUIX_INTRO_CLASS_DESC" />
+				<field name="image_class" type="text" default="" label="MOD_LYQUIX_IMAGE_CLASS" description="MOD_LYQUIX_IMAGE_CLASS_DESC" />
+				<field name="fields_class" type="text" default="" label="MOD_LYQUIX_FIELDS_CLASS" description="MOD_LYQUIX_FIELDS_CLASS_DESC" />
+				<field name="readmore_class" type="text" default="" label="MOD_LYQUIX_READMORE_CLASS" description="MOD_LYQUIX_READMORE_CLASS_DESC" />
 				<field name="modpretxt" type="text" default="" label="MOD_LYQUIX_ITEMS_MODPRETXT" description="MOD_LYQUIX_ITEMS_MODPRETXT_DESC" filter="raw" />
 				<field name="modpostxt" type="text" default="" label="MOD_LYQUIX_ITEMS_MODPOSTXT" description="MOD_LYQUIX_ITEMS_MODPOSTXT_DESC" filter="raw" />
 				<field name="itempretxt" type="text" default="" label="MOD_LYQUIX_ITEMS_ITEMPRETXT" description="MOD_LYQUIX_ITEMS_ITEMPRETXT_DESC" filter="raw" />
 				<field name="itempostxt" type="text" default="" label="MOD_LYQUIX_ITEMS_ITEMPOSTXT" description="MOD_LYQUIX_ITEMS_ITEMPOSTXT_DESC" filter="raw" />
+				<field name="" type="separator" default="MOD_LYQUIX_ITEMS_CUSTOM_RENDERING" level="level1" menu="hide" />
+				<field name="item_css_func" type="textarea" default="" label="MOD_LYQUIX_ITEMS_CSS_FUNC" description="MOD_LYQUIX_ITEMS_CSS_FUNC_DESC" filter="raw" />
+				<!--<field name="field_render_func" type="textarea" default="" label="MOD_LYQUIX_ITEMS_FIELDS_RENDERING_FUNC" description="MOD_LYQUIX_ITEMS_FIELDS_RENDERING_FUNC_DESC" filter="raw" />-->
 				<field name="" type="separator" default="MOD_LYQUIX_ITEMS_CACHING" level="level1" menu="hide" />
 				<field name="cache" type="list" default="1" label="MOD_LYQUIX_ITEMS_CACHING" description="MOD_LYQUIX_ITEMS_CACHING_DESC">
 					<option value="1">MOD_LYQUIX_ITEMS_USE_GLOBAL</option>
