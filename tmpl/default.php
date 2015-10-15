@@ -2,11 +2,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 // load required FLEXIcontent libraries
-require_once (JPATH_ADMINISTRATOR . DS . 'components/com_flexicontent/defineconstants.php');
-JTable::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_flexicontent' . DS . 'tables');
-require_once ("components/com_flexicontent/models/" . FLEXI_ITEMVIEW . ".php");
-require_once ("components/com_flexicontent/classes/flexicontent.fields.php");
-require_once ("components/com_flexicontent/classes/flexicontent.helper.php");
+require_once (JPATH_ADMINISTRATOR.DS.'components/com_flexicontent/defineconstants.php');
+JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_flexicontent'.DS.'tables');
+require_once("components/com_flexicontent/classes/flexicontent.fields.php");
+require_once("components/com_flexicontent/classes/flexicontent.helper.php");
+require_once("components/com_flexicontent/helpers/permission.php");
+require_once("components/com_flexicontent/models/".FLEXI_ITEMVIEW.".php");
 
 // are there any items to show?
 if (count($items)) {
@@ -27,7 +28,7 @@ if (count($items)) {
 		$itemmodel = new FlexicontentModelItem();
 		$item = $itemmodel -> getItem($id, false);
 		$items = array($item);
-		FlexicontentFields::getFields($items);
+		FlexicontentFields::getFields($items, 'module', $skip_params = null);
 		
 		// generate item url
 		$item_link = JRoute::_(FlexicontentHelperRoute::getItemRoute($item -> slug, $item -> categoryslug));
@@ -172,14 +173,12 @@ if (count($items)) {
 				
 				case 'fields':
 					// Additional fields
-					// get list of fields
-					$fields = explode(",", $params -> get('fields'));
 					
 					// cycle through fields
-					foreach ($fields as $field_name) {
+					foreach ($params -> get('fields') as $field_name) {
 						// process field
 						FlexicontentFields::getFieldDisplay($item, $field_name);
-						if (isset($item -> fieldvalues[$item -> fields[$field_name] -> id])) {
+						if (isset($item -> fields[$field_name])) {
 							$item_fields .= '<div class="field field_' . $field_name . ' ' . $params -> get('fields_class') . '">';
 							if ($params -> get('fields_label')) {
 								$item_fields .= '<div class="label">' . $item -> fields[$field_name] -> label . '</div>';
