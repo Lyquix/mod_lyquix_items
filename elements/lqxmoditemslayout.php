@@ -13,6 +13,7 @@ class JFormFieldLqxmoditemslayout extends JFormField {
 	var $type = 'lqxmoditemslayout';
 
 	function getInput() {
+		$html = '';
 		$doc = JFactory::getDocument();
 		$db = JFactory::getDBO();
 		$cparams = JComponentHelper::getParams('com_flexicontent');
