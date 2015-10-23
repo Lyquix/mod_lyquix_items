@@ -1,6 +1,9 @@
 <?php
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+/**
+ * @license GNU/GPL v2
+ * @copyright  Copyright (c) Lyquix. All rights reserved.
+ */
+defined( '_JEXEC' ) or die( 'Restricted access' );
 if (FLEXI_J16GE) {
 	jimport('joomla.html.html');
 	jimport('joomla.form.formfield');

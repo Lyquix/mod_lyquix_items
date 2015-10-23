@@ -1,5 +1,9 @@
-<?php // no direct access
-defined('_JEXEC') or die('Restricted access');
+<?php 
+/**
+ * @license GNU/GPL v2
+ * @copyright  Copyright (c) Lyquix. All rights reserved.
+ */
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 // are there any items to show?
 if (count($items)) {

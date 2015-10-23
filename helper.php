@@ -1,6 +1,9 @@
 <?php
-// no direct access
-defined('_JEXEC') or die('Restricted access');
+/**
+ * @license GNU/GPL v2
+ * @copyright  Copyright (c) Lyquix. All rights reserved.
+ */
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class modLyquixItemsHelper {
 	static function getList(&$params) {

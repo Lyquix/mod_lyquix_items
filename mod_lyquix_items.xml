@@ -2,12 +2,12 @@
 <extension type="module" version="2.5" client="site" method="upgrade">
 	<name>Lyquix Items</name>
 	<author>Lyquix</author>
-	<creationDate>15 Oct 2015</creationDate>
+	<creationDate>23 Oct 2015</creationDate>
 	<copyright>(c) Lyquix</copyright>
-	<license></license>
+	<license>GNU/GPL v2</license>
 	<authorEmail>info@lyquix.com</authorEmail>
 	<authorUrl>http://www.lyquix.com</authorUrl>
-	<version>2.0.2</version>
+	<version>2.0.3</version>
 	<description>Generates a list of FLEXIcontent Items</description>
 	<files>
 		<filename>mod_lyquix_items.xml</filename>
