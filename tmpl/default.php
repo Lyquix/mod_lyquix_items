@@ -1,9 +1,5 @@
-<?php 
-/**
- * @license GNU/GPL v2
- * @copyright  Copyright (c) Lyquix. All rights reserved.
- */
-defined( '_JEXEC' ) or die( 'Restricted access' );
+<?php // no direct access
+defined('_JEXEC') or die('Restricted access');
 
 // are there any items to show?
 if (count($items)) {
@@ -43,7 +39,7 @@ if (count($items)) {
 		eval($params -> get('item_css_func'));		
 		
 		// item open tag
-		$display = '<div class="item ' . implode(' ', $css) . '">';
+		$display = '<li class="item ' . implode(' ', $css) . '">';
 		
 		// item pre-text
 		$display .= $params -> get('itempretxt');
@@ -167,17 +163,21 @@ if (count($items)) {
 				case 'fields':
 					// Additional fields
 					
+					$field_names = $params -> get('fields');
+					$fields = explode(", ", $field_names);
 					// cycle through fields
-					foreach ($params -> get('fields') as $field_name) {
+					foreach ($fields as $field_name) {
 						// process field
 						FlexicontentFields::getFieldDisplay($item, $field_name);
 						if (isset($item -> fields[$field_name])) {
-							$item_fields .= '<div class="field field_' . $field_name . ' ' . $params -> get('fields_class') . '">';
-							if ($params -> get('fields_label')) {
-								$item_fields .= '<div class="label">' . $item -> fields[$field_name] -> label . '</div>';
+							if (!(empty($item->fields[$field_name]->display))){
+								$item_fields .= '<div class="field field_' . $field_name . ' ' . $params -> get('fields_class') . '">';
+								if ($params -> get('fields_label')) {
+									$item_fields .= '<div class="label">' . $item -> fields[$field_name] -> label . '</div>';
+								}
+								$item_fields .= $item -> fields[$field_name] -> display . '</div>';
 							}
-							$item_fields .= $item -> fields[$field_name] -> display . '</div>';
-						}
+						}	
 					}
 					
 					$display .= $item_fields;
@@ -194,7 +194,7 @@ if (count($items)) {
 			
 		}
 
-		$display .= $params -> get('itempostxt') . '</div>';
+		$display .= $params -> get('itempostxt') . '</li>';
 		echo $display;
 	}
 	echo $params -> get('modpostxt');
