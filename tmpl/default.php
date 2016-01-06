@@ -55,25 +55,68 @@ if (count($items)) {
 						
 						// if there is image content
 						if (isset($item -> fieldvalues[$item -> fields[$params -> get('image_field')] -> id])) {
-							FlexicontentFields::getFieldDisplay($item, $params -> get('image_field'));
-							$xmlDoc = new DOMDocument();
-							$xmlDoc -> loadXML($item -> fields[$params -> get('image_field')] -> display);
-							$image_src = $xmlDoc -> getElementsByTagName('img') -> item(0) -> getAttribute('src');
 							
-							$display .= '<div class="image ' . ($params -> get('image_align') != 'none' ? $params -> get('image_align') : '') . ' ' . $params -> get('image_class') . '">';
+							// Unserialize value's properties and check for empty original name property
+							$value	= unserialize($item -> fieldvalues[$item -> fields[$params -> get('image_field')] -> id][0]);
+							$image_name = trim(@$value['originalname']);
 							
-							// make image clickable?
-							if ($params -> get('image_link', 1)) {
-								$display .= '<a href="' . $item_link . '">';
+							if (strlen($image_name) ) {
+								
+								$field = $item -> fields[$params -> get('image_field')];
+								$field->parameters = json_decode($field->attribs, true);
+								$image_source = $field->parameters['image_source'];
+								$dir_url = str_replace('\\','/', $field->parameters['dir']);
+								
+								// Extra thumbnails sub-folder for various
+								if ( $image_source == -1 ) {
+									$extra_folder = 'intro_full';  // intro-full images mode
+								}
+								else if ( $image_source > 0 ) {
+									// Check if using folder of original content being translated
+									$of_usage = $field->untranslatable ? 1 : $field->parameters['of_usage'];
+									$u_item_id = ($of_usage && $item->lang_parent_id && $item->lang_parent_id != $item->id)  ?  $item->lang_parent_id  :  $item->id;
+									$extra_folder = 'item_' . $u_item_id . '_field_' . $field->id;  // folder-mode 1
+									if ( $image_source > 1 ) ; // TODO
+								}
+								else {
+									$extra_folder = '';  // db-mode
+								}
+								
+								// Create thumbs/image Folder and URL paths
+								$src = JURI::root(true) . '/' . $dir_url . ($extra_folder ? '/' . $extra_folder : '');
+								switch ($params -> get('thumb_size', 1)) {
+									case 1: 
+										$src .= '/s_'; 
+										break;
+										
+									case 2: 
+										$src .= '/m_'; 
+										break;
+										
+									case 3: 
+										$src .= '/l_'; 
+										break;
+								}
+							
+														
+								$src .= $extra_prefix . $image_name;
+								
+								$display .= '<div class="image ' . ($params -> get('image_align') != 'none' ? $params -> get('image_align') : '') . ' ' . $params -> get('image_class') . '">';
+								
+								// make image clickable?
+								if ($params -> get('image_link', 1)) {
+									$display .= '<a href="' . $item_link . '">';
+								}
+	
+								$display .= '<img src="' . $src . '" alt="' . htmlspecialchars(@$value['alt'], ENT_COMPAT, 'UTF-8') . '" />';
+								
+								if ($params -> get('image_link', 1)) {
+									$display .= '</a>';
+								}
+								
+								$display .= '</div>';
+								
 							}
-
-							$display .= '<img src="' . $image_src . '" />';
-							
-							if ($params -> get('image_link', 1)) {
-								$display .= '</a>';
-							}
-							
-							$display .= '</div>';
 						}
 					}
 					
