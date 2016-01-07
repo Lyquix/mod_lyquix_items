@@ -2,12 +2,12 @@
 <extension type="module" version="2.5" client="site" method="upgrade">
 	<name>Lyquix Items for FLEXIcontent</name>
 	<author>Lyquix</author>
-	<creationDate>2016-01-06</creationDate>
+	<creationDate>2016-01-07</creationDate>
 	<copyright>(c) Lyquix</copyright>
 	<license>GNU/GPL v2</license>
 	<authorEmail>info@lyquix.com</authorEmail>
 	<authorUrl>http://www.lyquix.com</authorUrl>
-	<version>2.0.5</version>
+	<version>2.0.6</version>
 	<description>Generates a list of FLEXIcontent Items</description>
 	<files>
 		<filename>mod_lyquix_items.xml</filename>
@@ -101,24 +101,24 @@
 					<option value="right">MOD_LYQUIX_ITEMS_RIGHT</option>
 					<option value="none">MOD_LYQUIX_ITEMS_NONE</option>
 				</field>
-				<field name="image_size" type="radio" default="1" label="MOD_LYQUIX_ITEMS_IMAGE_SIZE" description="MOD_LYQUIX_ITEMS_IMAGE_SIZE_DESC">
-					<option value="1">MOD_LYQUIX_ITEMS_SMALL</option>
-					<option value="2">MOD_LYQUIX_ITEMS_MEDIUM</option>
-					<option value="3">MOD_LYQUIX_ITEMS_LARGE</option>
-					<!--<option value="custom">MOD_LYQUIX_ITEMS_CUSTOM</option>-->
+				<field name="image_size" type="radio" default="s" label="MOD_LYQUIX_ITEMS_IMAGE_SIZE" description="MOD_LYQUIX_ITEMS_IMAGE_SIZE_DESC">
+					<option value="s">MOD_LYQUIX_ITEMS_SMALL</option>
+					<option value="m">MOD_LYQUIX_ITEMS_MEDIUM</option>
+					<option value="l">MOD_LYQUIX_ITEMS_LARGE</option>
+					<option value="custom">MOD_LYQUIX_ITEMS_CUSTOM</option>
 				</field>
-				<!--<field name="image_resize" type="radio" default="1" label="MOD_LYQUIX_ITEMS_IMAGE_PROCESSING_METHOD" description="MOD_LYQUIX_ITEMS_IMAGE_PROCESSING_METHOD_DESC">
+				<field name="image_resize" type="radio" default="1" label="MOD_LYQUIX_ITEMS_IMAGE_PROCESSING_METHOD" description="MOD_LYQUIX_ITEMS_IMAGE_PROCESSING_METHOD_DESC">
 					<option value="0">MOD_LYQUIX_ITEMS_IMAGE_SCALE</option>
 					<option value="1">MOD_LYQUIX_ITEMS_IMAGE_CROP</option>
 				</field>
-				<field name="image_width" type="text" size="4" default="80" label="MOD_LYQUIX_ITEMS_IMAGE_WIDTH" description="MOD_LYQUIX_ITEMS_IMAGE_WIDTH" />
-				<field name="image_height" type="text" size="4" default="80" label="MOD_LYQUIX_ITEMS_IMAGE_HEIGHT" description="MOD_LYQUIX_ITEMS_IMAGE_HEIGHT" />-->
+				<field name="image_width" type="text" size="4" default="960" label="MOD_LYQUIX_ITEMS_IMAGE_WIDTH" description="MOD_LYQUIX_ITEMS_IMAGE_WIDTH" />
+				<field name="image_height" type="text" size="4" default="540" label="MOD_LYQUIX_ITEMS_IMAGE_HEIGHT" description="MOD_LYQUIX_ITEMS_IMAGE_HEIGHT" />
 				<field name="" type="separator" default="MOD_LYQUIX_ITEMS_FIELDS_PARAMS" level="level1" menu="hide" />
 				<field name="fields_label" type="radio" default="0" label="MOD_LYQUIX_ITEMS_FIELDS_LABEL" description="MOD_LYQUIX_ITEMS_FIELDS_LABEL_DESC">
 					<option value="0">MOD_LYQUIX_ITEMS_NO</option>
 					<option value="1">MOD_LYQUIX_ITEMS_YES</option>
 				</field>
-				<field name="fields" type="fields" multiple="multiple" fieldnameasvalue="fieldnameasvalue" default="" label="MOD_LYQUIX_ITEMS_FIELDS" description="MOD_LYQUIX_ITEMS_FIELDS_DESC" />
+				<field name="fields" type="text" default="" label="MOD_LYQUIX_ITEMS_FIELDS" description="MOD_LYQUIX_ITEMS_FIELDS_DESC" />
 				<field name="" type="separator" default="MOD_LYQUIX_ITEMS_READMORE_PARAMS" level="level1" menu="hide" />
 				<field name="readmore_label" type="text" default="Read More" label="MOD_LYQUIX_ITEMS_READMORE_LABEL" description="MOD_LYQUIX_ITEMS_READMORE_LABEL_DESC" filter="raw" />
 			</fieldset>
@@ -138,7 +138,7 @@
 				<field name="itempostxt" type="text" default="" label="MOD_LYQUIX_ITEMS_ITEMPOSTXT" description="MOD_LYQUIX_ITEMS_ITEMPOSTXT_DESC" filter="raw" />
 				<field name="" type="separator" default="MOD_LYQUIX_ITEMS_CUSTOM_RENDERING" level="level1" menu="hide" />
 				<field name="item_css_func" type="textarea" default="" label="MOD_LYQUIX_ITEMS_CSS_FUNC" description="MOD_LYQUIX_ITEMS_CSS_FUNC_DESC" filter="raw" />
-				<!--<field name="field_render_func" type="textarea" default="" label="MOD_LYQUIX_ITEMS_FIELDS_RENDERING_FUNC" description="MOD_LYQUIX_ITEMS_FIELDS_RENDERING_FUNC_DESC" filter="raw" />-->
+				<field name="field_render_func" type="textarea" default="" label="MOD_LYQUIX_ITEMS_FIELDS_RENDERING_FUNC" description="MOD_LYQUIX_ITEMS_FIELDS_RENDERING_FUNC_DESC" filter="raw" />
 				<field name="" type="separator" default="MOD_LYQUIX_ITEMS_CACHING" level="level1" menu="hide" />
 				<field name="cache" type="list" default="1" label="MOD_LYQUIX_ITEMS_CACHING" description="MOD_LYQUIX_ITEMS_CACHING_DESC">
 					<option value="1">MOD_LYQUIX_ITEMS_USE_GLOBAL</option>

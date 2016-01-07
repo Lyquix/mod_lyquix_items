@@ -3,143 +3,156 @@ defined('_JEXEC') or die('Restricted access');
 
 // are there any items to show?
 if (count($items)) {
-	
+
 	// load required FLEXIcontent libraries
-	require_once (JPATH_ADMINISTRATOR.DS.'components/com_flexicontent/defineconstants.php');
-	JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_flexicontent'.DS.'tables');
-	require_once("components/com_flexicontent/classes/flexicontent.fields.php");
-	require_once("components/com_flexicontent/classes/flexicontent.helper.php");
-	require_once("components/com_flexicontent/helpers/permission.php");
-	require_once("components/com_flexicontent/models/".FLEXI_ITEMVIEW.".php");
-	
+	require_once (JPATH_ADMINISTRATOR . DS . 'components/com_flexicontent/defineconstants.php');
+	JTable::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_flexicontent' . DS . 'tables');
+	require_once ("components/com_flexicontent/classes/flexicontent.fields.php");
+	require_once ("components/com_flexicontent/classes/flexicontent.helper.php");
+	require_once ("components/com_flexicontent/helpers/permission.php");
+	require_once ("components/com_flexicontent/models/" . FLEXI_ITEMVIEW . ".php");
+
 	echo '<div class="module mod_lyquix_items' . $params -> get('moduleclass_sfx') . '">';
 	// module pre-text
 	echo $params -> get('modpretxt');
-	
+
 	// get layout order
 	$layout_order = explode(',', $params -> get('layout_order', 'image,title,date,author,intro,fields,readmore'));
-	
+
 	// cycle through items
 	foreach ($items as $id) {
-		
+
 		// initialize some working variables
 		list($item_title, $item_date, $item_author, $item_titledateauthor, $item_introtext, $item_image, $item_fields) = '';
-		
+
 		// create a new FC object for the item
 		$itemmodel = new FlexicontentModelItem();
 		$item = $itemmodel -> getItem($id, false);
 		$itemslist = array($item);
 		FlexicontentFields::getFields($itemslist, 'module');
-		
+
 		// generate item url
 		$item_link = JRoute::_(FlexicontentHelperRoute::getItemRoute($item -> slug, $item -> categoryslug));
-		
+
 		// get custom CSS from user function
 		$css = array();
-		eval($params -> get('item_css_func'));		
-		
+		eval($params -> get('item_css_func'));
+
 		// item open tag
 		$display = '<li class="item ' . implode(' ', $css) . '">';
-		
+
 		// item pre-text
 		$display .= $params -> get('itempretxt');
-		
+
 		// cycle through layout order
-		foreach($layout_order as $section) {
-			
+		foreach ($layout_order as $section) {
+
 			switch($section) {
-				
-				case 'image':
+
+				case 'image' :
 					// Image
-					if($params -> get('image_field') != '') {
-						
+					if ($params -> get('image_field') != '') {
+
 						// if there is image content
 						if (isset($item -> fieldvalues[$item -> fields[$params -> get('image_field')] -> id])) {
-							
+
 							// Unserialize value's properties and check for empty original name property
-							$value	= unserialize($item -> fieldvalues[$item -> fields[$params -> get('image_field')] -> id][0]);
+							$value = unserialize($item -> fieldvalues[$item -> fields[$params -> get('image_field')] -> id][0]);
 							$image_name = trim(@$value['originalname']);
-							
-							if (strlen($image_name) ) {
-								
+
+							if (strlen($image_name)) {
+
 								$field = $item -> fields[$params -> get('image_field')];
-								$field->parameters = json_decode($field->attribs, true);
-								$image_source = $field->parameters['image_source'];
-								$dir_url = str_replace('\\','/', $field->parameters['dir']);
+								$field -> parameters = json_decode($field -> attribs, true);
+								$image_source = $field -> parameters['image_source'];
+								$dir_url = str_replace('\\', '/', $field -> parameters['dir']);
+								$multiple_image_usages = !$image_source && $field -> parameters['list_all_media_files'] && $field -> parameters['unique_thumb_method'] == 0;
+								$extra_prefix = $multiple_image_usages ? 'fld' . $field -> id . '_' : '';
+								$of_usage = $field -> untranslatable ? 1 : $field -> parameters['of_usage'];
+								$u_item_id = ($of_usage && $item -> lang_parent_id && $item -> lang_parent_id != $item -> id) ? $item -> lang_parent_id : $item -> id;
+								$extra_folder = '/item_' . $u_item_id . '_field_' . $field -> id;
+										
+								if ($params -> get('image_size') == 'custom') {
+									
+									// get the original image file path
+									$image_file = JPATH_SITE . '/';
+									
+									// supports only db mode and item-field folder mode
+									if ($image_source == 0) {
+										// db mode
+										$cparams = JComponentHelper::getParams('com_flexicontent');
+										$image_file .= str_replace('\\', '/', $cparams -> get('file_path', 'components/com_flexicontent/uploads'));
+									} else if ($image_source == 1) {
+										// item+field specific folder
+										$image_file .= $dir_url . $extra_folder . '/original';
+									}
+									
+									// custom size image
+									$image_file .= '/' .  $image_name;
+									
+									$conf = '&amp;w=' . $params -> get('image_width', 960) . '&amp;h=' . $params -> get('image_height', 540) . '&amp;aoe=1&amp;q=95';
+									$conf .= $params -> get('image_resize', 1) ? '&amp;zc=1' : '';
+									$ext = strtolower(pathinfo($image_file, PATHINFO_EXTENSION));
+									$conf .= in_array($ext, array('png', 'ico', 'gif')) ? '&amp;f=' . $ext : '';
+									
+									$src = JURI::root(true) . '/components/com_flexicontent/librairies/phpthumb/phpThumb.php?src=' . urlencode($image_file) . $conf;
+									
+								}
 								
-								// Extra thumbnails sub-folder for various
-								if ( $image_source == -1 ) {
-									$extra_folder = 'intro_full';  // intro-full images mode
-								}
-								else if ( $image_source > 0 ) {
-									// Check if using folder of original content being translated
-									$of_usage = $field->untranslatable ? 1 : $field->parameters['of_usage'];
-									$u_item_id = ($of_usage && $item->lang_parent_id && $item->lang_parent_id != $item->id)  ?  $item->lang_parent_id  :  $item->id;
-									$extra_folder = 'item_' . $u_item_id . '_field_' . $field->id;  // folder-mode 1
-									if ( $image_source > 1 ) ; // TODO
-								}
 								else {
-									$extra_folder = '';  // db-mode
+									
+									// Create thumbs URL path
+									$src = JURI::root(true) . '/' . $dir_url;
+									
+									// Extra thumbnails sub-folder
+									if ($image_source == 1) {
+										// item+field specific folder
+										$src .= $extra_folder;
+									}
+	
+									$src .= '/' . $params -> get('thumb_size', 's') . '_' . $extra_prefix . $image_name;
+									
 								}
-								
-								// Create thumbs/image Folder and URL paths
-								$src = JURI::root(true) . '/' . $dir_url . ($extra_folder ? '/' . $extra_folder : '');
-								switch ($params -> get('thumb_size', 1)) {
-									case 1: 
-										$src .= '/s_'; 
-										break;
-										
-									case 2: 
-										$src .= '/m_'; 
-										break;
-										
-									case 3: 
-										$src .= '/l_'; 
-										break;
-								}
-							
-														
-								$src .= $extra_prefix . $image_name;
-								
+
 								$display .= '<div class="image ' . ($params -> get('image_align') != 'none' ? $params -> get('image_align') : '') . ' ' . $params -> get('image_class') . '">';
-								
+
 								// make image clickable?
 								if ($params -> get('image_link', 1)) {
 									$display .= '<a href="' . $item_link . '">';
 								}
-	
+
 								$display .= '<img src="' . $src . '" alt="' . htmlspecialchars(@$value['alt'], ENT_COMPAT, 'UTF-8') . '" />';
-								
+
 								if ($params -> get('image_link', 1)) {
 									$display .= '</a>';
 								}
-								
+
 								$display .= '</div>';
-								
+
 							}
 						}
 					}
-					
+
 					break;
-					
-				case 'title':
+
+				case 'title' :
 					// Title
-					
+
 					// first get the item title (just in case)
 					$item_title = $item -> title;
-					
+
 					if ($params -> get('title_field', 'title') != 'title' && array_key_exists($item -> fields[$params -> get('title_field')] -> id, $item -> fieldvalues)) {
 						// check what kind of field we are using
 						switch($item->fields[$params->get('title_field')]->field_type) {
 							// for item relations, get the title of the related item
-							case 'relateditems':
-							case 'relateditems_advanced':
+							case 'relateditems' :
+							case 'relateditems_advanced' :
 								$relitemmodel = new FlexicontentModelItem();
 								$relitem = $relitemmodel -> getItem($item -> fieldvalues[$item -> fields[$params -> get('title_field')] -> id][0], false);
 								$item_title = $relitem -> title;
 								break;
-							
-							// otherwise just use the regular field display and strip any html	
+
+							// otherwise just use the regular field display and strip any html
 							default :
 								FlexicontentFields::getFieldDisplay($item, $params -> get('title_field'));
 								$item_title = $item -> fields[$params -> get('title_field')] -> display;
@@ -156,31 +169,31 @@ if (count($items)) {
 					if ($params -> get('title_link', 1)) {
 						$item_title = '<a href="' . $item_link . '">' . $item_title . '</a>';
 					}
-					
+
 					$display .= '<h' . $params -> get('title_heading_level', 3) . ' class="' . $params -> get('title_class') . '">' . $item_title . '</h' . $params -> get('title_heading_level', 3) . '>';
-				
+
 					break;
-				
-				case 'date':
+
+				case 'date' :
 					// Date
 					$item_date = $params -> get('date_label') . JHTML::_('date', $params -> get('date_fields') == 'created' ? $item -> created : $item -> modified, $params -> get('date_format', 'DATE_FORMAT_LC3') != 'custom' ? $params -> get('date_format', 'DATE_FORMAT_LC3') : $params -> get('date_custom'));
 					$display .= '<div class="date ' . $params -> get('date_class') . '">' . $item_date . '</div>';
-					
+
 					break;
-				
-				case 'author':
+
+				case 'author' :
 					// Author
 					$item_author = $params -> get('author_label') . ($item -> created_by_alias ? $item -> created_by_alias : $item -> creator);
 					$display .= '<div class="author ' . $params -> get('author_class') . '">' . $item_author . '</div>';
-					
+
 					break;
-				
-				case 'intro':
+
+				case 'intro' :
 					// Intro text
-					
+
 					// get intro text from item, just in case
 					$item_introtext = strip_tags($item -> text);
-					
+
 					// not default text?
 					if ($params -> get('introtext_field', 'text') != 'text') {
 						if (isset($item -> fieldvalues[$item -> fields[$params -> get('introtext_field')] -> id])) {
@@ -196,45 +209,54 @@ if (count($items)) {
 						$item_introtext = trim(substr($item_introtext, 0, $params -> get('introtext_length', 200)));
 						$item_introtext = substr($item_introtext, 0, strrpos($item_introtext, " ")) . "...";
 					}
-					// is there intro text?					
+					// is there intro text?
 					if ($item_introtext) {
 						$display .= '<div class="field_' . $params -> get('introtext_field', 'description') . ' ' . $params -> get('intro_class') . '">' . $item_introtext . '</div>';
 					}
-					
+
 					break;
-				
-				case 'fields':
+
+				case 'fields' :
 					// Additional fields
-					
+
 					$field_names = $params -> get('fields');
-					$fields = explode(", ", $field_names);
+					$fields = explode(",", $field_names);
 					// cycle through fields
 					foreach ($fields as $field_name) {
+						$field_name = trim($field_name);
 						// process field
 						FlexicontentFields::getFieldDisplay($item, $field_name);
 						if (isset($item -> fields[$field_name])) {
-							if (!(empty($item->fields[$field_name]->display))){
-								$item_fields .= '<div class="field field_' . $field_name . ' ' . $params -> get('fields_class') . '">';
+							
+							$field = $item -> fields[$field_name];
+							
+							$field_html = '';
+							
+							// render using custom field function
+							eval($params -> get('field_render_func'));
+							
+							if (!$field_html && !(empty($item -> fields[$field_name] -> display))) {
+								$field_html .= '<div class="field field_' . $field_name . ' ' . $params -> get('fields_class') . '">';
 								if ($params -> get('fields_label')) {
-									$item_fields .= '<div class="label">' . $item -> fields[$field_name] -> label . '</div>';
+									$field_html .= '<div class="label">' . $item -> fields[$field_name] -> label . '</div>';
 								}
-								$item_fields .= $item -> fields[$field_name] -> display . '</div>';
+								$field_html .= $item -> fields[$field_name] -> display . '</div>';
 							}
-						}	
+							
+							$display .= $field_html;
+							
+						}
 					}
-					
-					$display .= $item_fields;
-					
+
 					break;
-				
-				case 'readmore':
+
+				case 'readmore' :
 					// Read more link
 					$display .= '<a class="readmore ' . $params -> get('readmore_class') . '" href="' . $item_link . '">' . $params -> get('readmore_label', 'Read More') . '</a>';
-					
+
 					break;
-				
 			}
-			
+
 		}
 
 		$display .= $params -> get('itempostxt') . '</li>';
