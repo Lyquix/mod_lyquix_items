@@ -110,7 +110,7 @@ if (count($items)) {
 										$src .= $extra_folder;
 									}
 	
-									$src .= '/' . $params -> get('thumb_size', 's') . '_' . $extra_prefix . $image_name;
+									$src .= '/' . $params -> get('image_size', 's') . '_' . $extra_prefix . $image_name;
 									
 								}
 
