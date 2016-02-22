@@ -3,18 +3,23 @@ defined('_JEXEC') or die('Restricted access');
 
 // are there any items to show?
 if (count($items)) {
+	
+	$html = '';
+	$json = array();
+	$i = 0;
 
 	// load required FLEXIcontent libraries
-	require_once (JPATH_ADMINISTRATOR . DS . 'components/com_flexicontent/defineconstants.php');
-	JTable::addIncludePath(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_flexicontent' . DS . 'tables');
-	require_once ("components/com_flexicontent/classes/flexicontent.fields.php");
-	require_once ("components/com_flexicontent/classes/flexicontent.helper.php");
-	require_once ("components/com_flexicontent/helpers/permission.php");
-	require_once ("components/com_flexicontent/models/" . FLEXI_ITEMVIEW . ".php");
+	require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_flexicontent'.DS.'defineconstants.php');
+	JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_flexicontent'.DS.'tables');
+	require_once (JPATH_SITE.DS.'components'.DS.'com_flexicontent'.DS.'helpers'.DS.'route.php');
+	require_once (JPATH_SITE.DS.'components'.DS.'com_flexicontent'.DS.'classes'.DS.'flexicontent.fields.php');
+	require_once (JPATH_SITE.DS.'components'.DS.'com_flexicontent'.DS.'classes'.DS.'flexicontent.helper.php');
+	require_once (JPATH_SITE.DS.'components'.DS.'com_flexicontent'.DS.'helpers'.DS.'permission.php');
+	require_once (JPATH_SITE.DS.'components'.DS.'com_flexicontent'.DS.'models'.DS.FLEXI_ITEMVIEW.'.php');
 
-	echo '<div class="module mod_lyquix_items' . $params -> get('moduleclass_sfx') . '">';
+	$html .= '<div class="module mod_lyquix_items' . $params -> get('moduleclass_sfx') . '">';
 	// module pre-text
-	echo $params -> get('modpretxt');
+	$html .= $params -> get('modpretxt');
 
 	// get layout order
 	$layout_order = explode(',', $params -> get('layout_order', 'image,title,date,author,intro,fields,readmore'));
@@ -39,11 +44,17 @@ if (count($items)) {
 		eval($params -> get('item_css_func'));
 
 		// item open tag
-		$display = '<li class="item ' . implode(' ', $css) . '">';
+		$html .= '<li class="item ' . implode(' ', $css) . '">';
 
 		// item pre-text
-		$display .= $params -> get('itempretxt');
-
+		$html .= $params -> get('itempretxt');
+		
+		// add item to json array
+		$json[$i] = array(
+			'id' => $id,
+			'url' => rtrim(JURI::base(), '/') . $item_link
+		);
+		
 		// cycle through layout order
 		foreach ($layout_order as $section) {
 
@@ -114,20 +125,21 @@ if (count($items)) {
 									
 								}
 
-								$display .= '<div class="image ' . ($params -> get('image_align') != 'none' ? $params -> get('image_align') : '') . ' ' . $params -> get('image_class') . '">';
+								$html .= '<div class="image ' . ($params -> get('image_align') != 'none' ? $params -> get('image_align') : '') . ' ' . $params -> get('image_class') . '">';
 
 								// make image clickable?
 								if ($params -> get('image_link', 1)) {
-									$display .= '<a href="' . $item_link . '">';
+									$html .= '<a href="' . $item_link . '">';
 								}
 
-								$display .= '<img src="' . $src . '" alt="' . htmlspecialchars(@$value['alt'], ENT_COMPAT, 'UTF-8') . '" />';
+								$html .= '<img src="' . $src . '" alt="' . htmlspecialchars(@$value['alt'], ENT_COMPAT, 'UTF-8') . '" />';
 
 								if ($params -> get('image_link', 1)) {
-									$display .= '</a>';
+									$html .= '</a>';
 								}
 
-								$display .= '</div>';
+								$html .= '</div>';
+								$json[$i]['image'] = $src;
 
 							}
 						}
@@ -165,26 +177,31 @@ if (count($items)) {
 						$item_title = trim(substr($item_title, 0, $params -> get('title_length', 100)));
 						$item_title = substr($item_title, 0, strrpos($item_title, " ")) . "...";
 					}
+					
+					$json[$i]['title'] = $item_title;
+					
 					// title clickable?
 					if ($params -> get('title_link', 1)) {
 						$item_title = '<a href="' . $item_link . '">' . $item_title . '</a>';
 					}
 
-					$display .= '<h' . $params -> get('title_heading_level', 3) . ' class="' . $params -> get('title_class') . '">' . $item_title . '</h' . $params -> get('title_heading_level', 3) . '>';
-
+					$html .= '<h' . $params -> get('title_heading_level', 3) . ' class="' . $params -> get('title_class') . '">' . $item_title . '</h' . $params -> get('title_heading_level', 3) . '>';
+					
 					break;
 
 				case 'date' :
 					// Date
 					$item_date = $params -> get('date_label') . JHTML::_('date', $params -> get('date_fields') == 'created' ? $item -> created : $item -> modified, $params -> get('date_format', 'DATE_FORMAT_LC3') != 'custom' ? $params -> get('date_format', 'DATE_FORMAT_LC3') : $params -> get('date_custom'));
-					$display .= '<div class="date ' . $params -> get('date_class') . '">' . $item_date . '</div>';
-
+					$html .= '<div class="date ' . $params -> get('date_class') . '">' . $item_date . '</div>';
+					$json[$i]['date'] = $item_date;
+					
 					break;
 
 				case 'author' :
 					// Author
 					$item_author = $params -> get('author_label') . ($item -> created_by_alias ? $item -> created_by_alias : $item -> creator);
-					$display .= '<div class="author ' . $params -> get('author_class') . '">' . $item_author . '</div>';
+					$html .= '<div class="author ' . $params -> get('author_class') . '">' . $item_author . '</div>';
+					$json[$i]['author'] = $item_author;
 
 					break;
 
@@ -211,7 +228,8 @@ if (count($items)) {
 					}
 					// is there intro text?
 					if ($item_introtext) {
-						$display .= '<div class="field_' . $params -> get('introtext_field', 'description') . ' ' . $params -> get('intro_class') . '">' . $item_introtext . '</div>';
+						$html .= '<div class="field_' . $params -> get('introtext_field', 'description') . ' ' . $params -> get('intro_class') . '">' . $item_introtext . '</div>';
+						$json[$i]['intro'] = $item_introtext;
 					}
 
 					break;
@@ -241,9 +259,10 @@ if (count($items)) {
 									$field_html .= '<div class="label">' . $item -> fields[$field_name] -> label . '</div>';
 								}
 								$field_html .= $item -> fields[$field_name] -> display . '</div>';
+								$json[$i][$field_name] = $item -> fields[$field_name] -> display;
 							}
 							
-							$display .= $field_html;
+							$html .= $field_html;
 							
 						}
 					}
@@ -252,16 +271,24 @@ if (count($items)) {
 
 				case 'readmore' :
 					// Read more link
-					$display .= '<a class="readmore ' . $params -> get('readmore_class') . '" href="' . $item_link . '">' . $params -> get('readmore_label', 'Read More') . '</a>';
+					$html .= '<a class="readmore ' . $params -> get('readmore_class') . '" href="' . $item_link . '">' . $params -> get('readmore_label', 'Read More') . '</a>';
 
 					break;
 			}
 
 		}
 
-		$display .= $params -> get('itempostxt') . '</li>';
-		echo $display;
+		$html .= $params -> get('itempostxt') . '</li>';
 	}
-	echo $params -> get('modpostxt');
-	echo '</div>';
+	$html .= $params -> get('modpostxt');
+	$html .= '</div>';
+	
+	// print output
+	$html_json = $params -> get('html_json', 'html');
+	if($html_json != 'json') {
+		echo $html;
+	}
+	if($html_json != 'html') {
+		echo '<script>var myItems' . $module -> id . ' = ' . json_encode($json) . ';</script>';
+	}
 }
