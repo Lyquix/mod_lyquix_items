@@ -259,7 +259,14 @@ if (count($items)) {
 									$field_html .= '<div class="label">' . $item -> fields[$field_name] -> label . '</div>';
 								}
 								$field_html .= $item -> fields[$field_name] -> display . '</div>';
-								$json[$i][$field_name] = $item -> fields[$field_name] -> display;
+
+								//PDW added code to add id, label, values and display to json field
+								$json[$i][$field_name] = array();
+								$json[$i][$field_name]['id'] = $field -> id;
+								$json[$i][$field_name]['label'] = $field -> label;
+								$json[$i][$field_name]['value'] = $item -> fields[$field -> name] -> iscore ? $item -> {$field -> name} : $item -> fieldvalues [$field -> id];
+								$json[$i][$field_name]['display'] = $field -> display;
+								//PDW added code end
 							}
 							
 							$html .= $field_html;
