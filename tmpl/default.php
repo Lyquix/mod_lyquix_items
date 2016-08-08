@@ -21,6 +21,7 @@ if (count($items)) {
 
 	if($html_json != 'json') {
 		$html = '';
+		$item_idx = 0;
 		if($banner_layout) $thumbnails = '';
 	}
 	if($html_json != 'html') {
@@ -361,6 +362,7 @@ if (count($items)) {
 		}
 
 		if($html_json != 'html') $json_idx++;
+		if($html_json != 'json') $item_idx++;
 
 	}
 
