@@ -133,9 +133,10 @@ class modLyquixItemsHelper {
 	}
 	
 	// function to generate URL from image field
-	static function getImageURL(&$item, $fieldname, $image_size, $image_width = null, $image_height = null, $image_resize = null) {
+	static function getImage(&$item, $fieldname, $image_size, $image_width = null, $image_height = null, $image_resize = null) {
 					
-		$src = '';
+		$url = '';
+		$value = '';
 
 		if (isset($item -> fieldvalues[$item -> fields[$fieldname] -> id])) {
 
@@ -170,42 +171,43 @@ class modLyquixItemsHelper {
 						$image_file .= $dir_url . $extra_folder . '/original';
 					}
 					
-					// custom size image
 					$image_file .= '/' .  $image_name;
-					
-					$ext = strtolower(pathinfo($image_file, PATHINFO_EXTENSION));
 
-					$conf = '&amp;w=' . $image_width . 
-							'&amp;h=' . $image_height . 
-							'&amp;aoe=1' .
-							'&amp;q=95' .
-							'&amp;ar=x' .
-							($image_resize ? '&amp;zc=1' : '') .
-							(in_array($ext, array('png', 'ico', 'gif')) ? '&amp;f=' . $ext : '');
-					
-					$src = JURI::root(true) . '/components/com_flexicontent/librairies/phpthumb/phpThumb.php?src=' . urlencode($image_file) . $conf;
+					$h		= '&amp;h=' . $image_height;
+					$w		= '&amp;w=' . $image_width;
+					$aoe	= '&amp;aoe=1';
+					$q		= '&amp;q=95';
+					$ar 	= '&amp;ar=x';
+					$zc		= $image_resize ? '&amp;zc=1' : '';
+					$ext    = strtolower(pathinfo($image_file, PATHINFO_EXTENSION));
+					$f      = in_array( $ext, array('png', 'ico', 'gif') ) ? '&amp;f='.$ext : '';
+					$conf	= $w . $h . $aoe . $q . $ar . $zc . $f;
+
+					$url = JURI::root(true) . '/components/com_flexicontent/librairies/phpthumb/phpThumb.php?src=' . urlencode($image_file) . $conf;
 					
 				}
 				
 				else {
 					
 					// Create thumbs URL path
-					$src = JURI::root(true) . '/' . $dir_url;
+					$url = JURI::root(true) . '/' . $dir_url;
 					
 					// Extra thumbnails sub-folder
 					if ($image_source == 1) {
 						// item+field specific folder
-						$src .= $extra_folder;
+						$url .= $extra_folder;
 					}
 
-					$src .= '/' . $image_size . '_' . $extra_prefix . $image_name;
+					$url .= '/' . $image_size . '_' . $extra_prefix . $image_name;
 					
 				}
 
 			}
 
+			$value['url'] = $url;
+
 		}
 
-		return $src;
+		return $value;
 	}
 }

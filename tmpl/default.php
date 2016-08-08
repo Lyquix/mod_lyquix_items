@@ -117,19 +117,20 @@ if (count($items)) {
 					// Image
 					if ($params -> get('image_field')) {
 
-						$src = modLyquixItemsHelper::getImageURL($item, $params -> get('image_field'), $params -> get('image_size', 'l'), $params -> get('image_width', 960), $params -> get('image_height', 540), $params -> get('image_resize', 1));
+						$image = modLyquixItemsHelper::getImage($item, $params -> get('image_field'), $params -> get('image_size', 'l'), $params -> get('image_width', 960), $params -> get('image_height', 540), $params -> get('image_resize', 1));
+						
+						// if banner and if the item has video
+						$video_id = '';
+						$banner_video_field = $params -> get('banner_video_field');
+						if ($banner_layout && $params -> get('banner_video', 0) && is_array($item -> fieldvalues [$banner_video_field])) {
+							$url = @unserialize($item -> fieldvalues [$banner_video_field][0])['url'];
+							if(preg_match('%(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})%i', $url, $match)) $video_id = $match[1];
+						}
 
 						// if there is image URL
-						if ($src) {
+						if ($image['url']) {
 
 							if($html_json != 'json') {
-								// if banner and if the item has video
-								$video_id = '';
-								$banner_video_field = $params -> get('banner_video_field');
-								if ($banner_layout && $params -> get('banner_video', 0) && is_array($item -> fieldvalues [$banner_video_field])) {
-									$url = @unserialize($item -> fieldvalues [$banner_video_field][0])['url'];
-									if(preg_match('%(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})%i', $url, $match)) $video_id = $match[1];
-								}
 
 								$html .= '<div class="image ' . ($params -> get('image_align') != 'none' ? $params -> get('image_align') : '') . ' ' . $params -> get('image_class') . '">';
 
@@ -141,7 +142,11 @@ if (count($items)) {
 									$html .= '<a href="' . $item_link . '">';
 								}
 
-								$html .= '<img src="' . $src . '" />';
+								$html .= '<img' .
+										 ' src="' . $image['url'] . '"' .
+										 ($image['alt'] ? ' alt="' . htmlentities($image['alt']) . '"' : '') .
+										 ($image['title'] ? ' title="' . htmlentities($image['title']) . '"' : '') .
+										 ' />';
 
 								if ($params -> get('image_link', 1)) {
 									$html .= '</a>';
@@ -150,7 +155,13 @@ if (count($items)) {
 								$html .= '</div>';
 							}
 							
-							if($html_json != 'html') $json[$json_idx]['image'] = rtrim(JURI::base(), '/') . $src;
+							if($html_json != 'html') {
+								$json[$json_idx]['image']['url'] = rtrim(JURI::base(), '/') . $image['url'];
+								if($image['alt']) $json[$json_idx]['image']['alt'] = $image['alt'];
+								if($image['title']) $json[$json_idx]['image']['title'] = $image['title'];
+								if($video_id) $json[$json_idx]['video']['id'] = $video_id;
+							}
+
 						}
 					}
 
@@ -339,8 +350,8 @@ if (count($items)) {
 				// thumbnail image
 				if ($params -> get('thumb_image_display')) {
 
-					$src = modLyquixItemsHelper::getImageURL($item, $params -> get('thumb_image_field'), $params -> get('thumb_image_size', 's'), $params -> get('thumb_image_width', 240), $params -> get('thumb_image_height', 135), $params -> get('thumb_image_resize', 1));
-					$thumbnails .= '<span class="image ' . $params -> get('thumb_image_class') . '"><img src="' . $src . '" /></span>';
+					$image = modLyquixItemsHelper::getImage($item, $params -> get('thumb_image_field'), $params -> get('thumb_image_size', 's'), $params -> get('thumb_image_width', 240), $params -> get('thumb_image_height', 135), $params -> get('thumb_image_resize', 1));
+					$thumbnails .= '<span class="image ' . $params -> get('thumb_image_class') . '"><img src="' . $image['url'] . '" /></span>';
 
 				}
 
