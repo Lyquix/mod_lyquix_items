@@ -299,12 +299,19 @@ if (count($items)) {
 								if($params -> get('json_field_id')) $json[$json_idx][$fieldname]['id'] = $field -> id;
 								if($params -> get('json_field_label')) $json[$json_idx][$fieldname]['label'] = $field -> label;
 								if($params -> get('json_field_value')) {
-									$value = $item -> fields[$field -> name] -> iscore ? $item -> {$field -> name} : $item -> fieldvalues [$field -> id];
-									foreach($value as $i => $v) {
-										$v = @unserialize($v);
-										if($v) $value[$i] = $v;
+									
+									$json[$json_idx][$fieldname]['value'] = $item -> fields[$field -> name] -> iscore ? $item -> {$field -> name} : $item -> fieldvalues [$field -> id];
+									// process serialized data
+									if(is_array($json[$json_idx][$fieldname]['value'])) {
+										foreach($json[$json_idx][$fieldname]['value'] as $value_idx => $value) {
+											$value = @unserialize($value);
+											if($value) $json[$json_idx][$fieldname]['value'][$value_idx] = $value;
+										}
 									}
-									$json[$json_idx][$fieldname]['value'] = $value;
+									else {
+										$value = @unserialize($json[$json_idx][$fieldname]['value']);
+										if($value) $json[$json_idx][$fieldname]['value'] = $value;
+									}
 								}
 								if($params -> get('json_field_display')) $json[$json_idx][$fieldname]['display'] = $field -> display;
 							}
