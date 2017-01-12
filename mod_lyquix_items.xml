@@ -2,12 +2,12 @@
 <extension type="module" version="2.5" client="site" method="upgrade">
 	<name>Lyquix Items Module for FLEXIcontent</name>
 	<author>Lyquix</author>
-	<creationDate>2016-08-16</creationDate>
+	<creationDate>2017-01-04</creationDate>
 	<copyright>(c) Lyquix</copyright>
 	<license>GNU/GPL v2</license>
 	<authorEmail>info@lyquix.com</authorEmail>
 	<authorUrl>http://www.lyquix.com</authorUrl>
-	<version>3.0.1</version>
+	<version>3.0.2</version>
 	<description>Generates a list of FLEXIcontent Items useful for rendering recent news, generate banner sliders, and upcoming events</description>
 	<files>
 		<filename>mod_lyquix_items.xml</filename>
@@ -20,6 +20,9 @@
 	<languages>
 		<language tag="en-GB">en-GB.mod_lyquix_items.ini</language>
 	</languages>
+	<updateservers>
+		<server type="extension" priority="1" name="Update Site">https://raw.githubusercontent.com/Lyquix/mod_lyquix_items/master/update.xml</server>
+	</updateservers>
 	<config>
 		<fields name="params" addfieldpath="modules/mod_lyquix_items/elements">
 			<fieldset name="basic">
