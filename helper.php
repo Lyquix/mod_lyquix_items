@@ -81,12 +81,11 @@ class modLyquixItemsHelper {
 			else $fieldname = 'c.' . $fieldname;
 
 			// get anchor date from URL if available
-			$anchor_date = JRequest::getString($params -> get('event_url_parameter','date'));
+			$anchor_date = JRequest::getString($params -> get('event_url_parameter','date'));	
 			if(!$anchor_date){
 				// no anchor date from url, get today's date
 				$anchor_date = date('Y-m-d');
-			}
-
+			}		
 			// adjust anchor date to this week, month or year if needed
 			$event_date_anchor = $params -> get('event_date_anchor', 'day');
 			if($event_date_anchor == 'week') {
@@ -99,12 +98,11 @@ class modLyquixItemsHelper {
 				}	 
 			}
 			else if($event_date_anchor == 'month') {
-				if($anchor_date) $anchor_date .= '-01';
-				else $anchor_date = date('Y-m') . '-01';
+				$anchor_date = date('Y-m', strtotime($anchor_date)) . '-01';	
 			}
 			else if($event_date_anchor == 'year') {
-				if($anchor_date) $anchor_date .= '-01-01';
-				else $anchor_date = date('Y') . '-01-01';
+				
+				$anchor_date = date('Y', strtotime($anchor_date)) . '-01-01';
 			}
 
 			// calculate range start
@@ -112,8 +110,7 @@ class modLyquixItemsHelper {
 			$query -> where($fieldname . " >= '" . $range . "'");
 			// calculate range end
 			$range = date("Y-m-d", strtotime($anchor_date . " +" . $params -> get('event_date_range_end', 0) . " " . $params -> get('event_date_range_unit', 'day')));
-			$query -> where($fieldname . " <= '" . $range . "'");
-
+			$query -> where($fieldname . " < '" . $range . "'");
 			// set ordering
 			$query -> order($fieldname . " " . $params -> get('event_ordering', 'ASC'));
 		}
