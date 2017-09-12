@@ -83,7 +83,7 @@
 				</field>
 				<field name="event_date_range_start" type="text" default="0" size="3" label="MOD_LYQUIX_ITEMS_EVENT_RANGE_START" description="MOD_LYQUIX_ITEMS_EVENT_RANGE_START_DESC" showon="items_selection_mode:events" />
 				<field name="event_date_range_end" type="text" default="1" size="3" label="MOD_LYQUIX_ITEMS_EVENT_RANGE_END" description="MOD_LYQUIX_ITEMS_EVENT_RANGE_END_DESC" showon="items_selection_mode:events" />
-				<field name="event_url_parameterevent_url_parameterevent_url_parameter" type="text" default="date" size="3" label="MOD_LYQUIX_ITEMS_EVENT_URL_PARAMETER" description="MOD_LYQUIX_ITEMS_EVENT_URL_PARAMETER_DESC" showon="items_selection_mode:events" />
+				<field name="event_url_parameter" type="text" default="date" size="3" label="MOD_LYQUIX_ITEMS_EVENT_URL_PARAMETER" description="MOD_LYQUIX_ITEMS_EVENT_URL_PARAMETER_DESC" showon="items_selection_mode:events" />
 				<field name="event_ordering" type="list" default="ASC" label="MOD_LYQUIX_ITEMS_EVENT_ORDERING" description="MOD_LYQUIX_ITEMS_EVENT_ORDERING_DESC" showon="items_selection_mode:events">
 					<option value="ASC">MOD_LYQUIX_ITEMS_EVENT_ORDER_ASC</option>
 					<option value="DESC">MOD_LYQUIX_ITEMS_EVENT_ORDER_DESC</option>
@@ -262,6 +262,9 @@
 				<field name="moduleclass_sfx" type="text" default="" label="MOD_LYQUIX_ITEMS_MODULE_CLASS_SUFFIX" description="MOD_LYQUIX_ITEMS_MODULE_CLASS_SUFFIX_DESC" />
 				<field name="modpretxt" type="text" default="" label="MOD_LYQUIX_ITEMS_MODPRETXT" description="MOD_LYQUIX_ITEMS_MODPRETXT_DESC" filter="raw" />
 				<field name="modpostxt" type="text" default="" label="MOD_LYQUIX_ITEMS_MODPOSTXT" description="MOD_LYQUIX_ITEMS_MODPOSTXT_DESC" filter="raw" />
+				<field name="itemlistclass_sfx" type="text" default="" label="MOD_LYQUIX_ITEMS_ITEM_LIST_CLASS_SUFFIX" description="MOD_LYQUIX_ITEMS_ITEM_LIST_CLASS_SUFFIX_DESC" />
+				<field name="itemlistpretxt" type="text" default="" label="MOD_LYQUIX_ITEMS_ITEM_LIST_PRETXT" description="MOD_LYQUIX_ITEMS_ITEM_LIST_PRETXT_DESC" filter="raw" />
+				<field name="itemlistpostxt" type="text" default="" label="MOD_LYQUIX_ITEMS_ITEM_LIST_POSTXT" description="MOD_LYQUIX_ITEMS_ITEM_LIST_POSTXT_DESC" filter="raw" />
 				<field name="itempretxt" type="text" default="" label="MOD_LYQUIX_ITEMS_ITEMPRETXT" description="MOD_LYQUIX_ITEMS_ITEMPRETXT_DESC" filter="raw" />
 				<field name="itempostxt" type="text" default="" label="MOD_LYQUIX_ITEMS_ITEMPOSTXT" description="MOD_LYQUIX_ITEMS_ITEMPOSTXT_DESC" filter="raw" />
 				<field name="scriptpretxt" type="text" default="" label="MOD_LYQUIX_ITEMS_SCRIPTPRETXT" description="MOD_LYQUIX_ITEMS_SCRIPTPRETXT_DESC" filter="raw" />

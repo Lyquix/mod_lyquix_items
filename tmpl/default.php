@@ -35,7 +35,9 @@ if (count($items)) {
 		// module pre-text
 		$html .= $params -> get('modpretxt');
 		// item list wrapper
-		$html .= '<ul>';
+		$html .= '<ul class="'.$params -> get('itemlistclass_sfx').'">';
+		// item list pre-text
+		$html .= $params -> get('itemlistpretxt');
 	}
 
 	// get layout order
@@ -385,6 +387,8 @@ if (count($items)) {
 	}
 
 	if($html_json != 'json') {
+		//item list post text 
+		$html .= $params -> get('itemlistpostxt');
 		// item list wrapper
 		$html .= '</ul>';
 
