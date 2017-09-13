@@ -1,14 +1,14 @@
-#Lyquix Items Module for FLEXIcontent#
+# Lyquix Items Module for FLEXIcontent
 
 Generates a list of FLEXIcontent items. Provides several advanced settings for selection, ordering, and displaying. Useful for recent blog posts, banners, and events.
 
-##Installation##
+## Installation
 
 Download the most recent version from https://github.com/Lyquix/mod_lyquix_items/releases and install via Joomla extension installer
 
-##Settings##
+## Settings
 
-###Items Selection###
+### Items Selection
 
 * __Category Scope__: select what categories to include or exclude from selection
 * __Type Scope__: select what content types to include or exclide from selection
@@ -27,7 +27,7 @@ Selection Modes:
 ![](http://i.imgur.com/Ky3zTIU.png)
 ![](http://i.imgur.com/wMz2SPx.png)
 
-##Display Settings##
+## Display Settings
 
 * __Output__: selects HTML, JSON or HTML+JSON output
 * __Layout Order__: controls the order in which the various elements will be rendered: title, image, date, author, intro, read more, and fields. Using additional "open" and "close" tags you can create more complex HTML structures.
@@ -48,7 +48,7 @@ Settings for specific fields:
 ![](http://i.imgur.com/ceogiFU.png)
 ![](http://i.imgur.com/Wd2HCUo.png)
 
-##JSON Settings##
+## JSON Settings
 
 Control whether to include the following in the JSON output:
 
@@ -64,9 +64,9 @@ Control whether to include the following in the JSON output:
 
 ![](http://i.imgur.com/yId7zBq.png)
 
-##Advanced Settings##
+## Advanced Settings
 
-* Custom CSS class
+* Custom CSS classes
 * Custom pre- and post- module and items HTML
 * Dynamic CSS class from field value
 * Custom CSS classes for field sections
