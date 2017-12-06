@@ -18,6 +18,7 @@ if (count($items)) {
 	$link_type 					= $params -> get('link_type', 'item');
 	$html_json 					= $params -> get('html_json', 'html');
 	$items_selection_mode 		= $params -> get('items_selection_mode', 'basic');
+	$link_field 				= $params -> get('link_field');
 
 	if($html_json != 'json') {
 		$html = '';
@@ -68,7 +69,7 @@ if (count($items)) {
 		}
 		else if($link_type == 'field') {
 			FlexicontentFields::getFieldDisplay($item, $params -> get('link_field'));
-			$html .= ' ' . $item -> fields[$link_field] -> display;
+			$item_link .=  $item -> fields[$link_field] -> display;
 		}
 
 		if($html_json != 'json') {
