@@ -38,6 +38,13 @@ class modLyquixItemsHelper {
 			$query -> where("c.id <> " . current(explode(":", JRequest::getVar('id'))));
 		}
 		
+		// featured item scope
+		if ($params->get('feat_scope') == 1) {
+			$query -> where("c.featured = '1'");
+		} elseif ($params->get('feat_scope') == 2) {
+			$query -> where("c.featured = '0'");
+		}
+		//print_r($query);
 		// language scope
 		if($params -> get('lang_scope', 1)) {
 			$lang = flexicontent_html::getUserCurrentLang();

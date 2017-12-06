@@ -49,6 +49,11 @@
 					<option value="0">MOD_LYQUIX_ITEMS_ALL</option>
 					<option value="1">MOD_LYQUIX_ITEMS_CURRENT_ONLY</option>
 				</field>
+				<field name="feat_scope" type="radio" default="0" label="MOD_LYQUIX_ITEMS_FEATURED_SCOPE" description="MOD_LYQUIX_ITEMS_FEATURED_DESC" class="btn-group group-fcinfo">
+					<option value="0">MOD_LYQUIX_ITEMS_ALL</option>
+					<option value="1">MOD_LYQUIX_ITEMS_FEATURED_ONLY</option>
+					<option value="2">MOD_LYQUIX_ITEMS_NON_FEATURED_ONLY</option>
+				</field>
 				<field name="" type="separator" default="MOD_LYQUIX_ITEMS_SELECTION_MODE_SEP" level="level2" menu="hide" />
 				<field name="items_selection_mode" type="radio" default="basic" label="MOD_LYQUIX_ITEMS_SELECTION_MODE" description="MOD_LYQUIX_ITEMS_SELECTION_MODE_SEP_DESC" class="btn-group group-fcinfo">
 					<option value="basic">MOD_LYQUIX_ITEMS_SELECTION_BASIC</option>
