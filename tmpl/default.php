@@ -69,7 +69,7 @@ if (count($items)) {
 		}
 		else if($link_type == 'field') {
 			FlexicontentFields::getFieldDisplay($item, $params -> get('link_field'));
-			$item_link .=  $item -> fields[$link_field] -> display;
+			$item_link =  $item -> fields[$link_field] -> display;
 		}
 
 		if($html_json != 'json') {
