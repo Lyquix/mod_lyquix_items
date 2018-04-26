@@ -334,7 +334,7 @@ if (count($items)) {
 					if($html_json != 'json') {
 						if(strstr($section, 'open')) {
 							$s++;
-							$html .= '<div class="section-' . $s . ' ' . $params -> get('css_section_' . $i) . '">';
+							$html .= '<div class="section-' . $s . ' ' . $params -> get('css_section_' . $s) . '">';
 						}
 
 						if(strstr($section, 'close')) {
