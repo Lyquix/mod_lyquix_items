@@ -26,7 +26,7 @@
 	<config>
 		<fields name="params" addfieldpath="modules/mod_lyquix_items/elements">
 			<fieldset name="basic">
-				
+
 
 				<field name="" type="separator" default="MOD_LYQUIX_ITEMS_LIST" level="level1" menu="hide" />
 
@@ -68,7 +68,7 @@
 					<option value="c.title">MOD_LYQUIX_ITEMS_TITLE_ORDER_ASC</option>
 					<option value="c.title DESC">MOD_LYQUIX_ITEMS_TITLE_ORDER_DESC</option>
 					<option value="RAND()">MOD_LYQUIX_ITEMS_RANDOM</option>
-				</field>				
+				</field>
 				<field name="event_date_field" type="fields" default="" field_type="date,created,modified" fieldnameasvalue="name" label="MOD_LYQUIX_ITEMS_EVENT_DATE_FIELD" description="MOD_LYQUIX_ITEMS_EVENT_DATE_FIELD_DESC" showon="items_selection_mode:events" />
 				<field name="event_date_anchor" type="radio" default="day" label="MOD_LYQUIX_ITEMS_EVENT_DATE_ANCHOR" description="MOD_LYQUIX_ITEMS_EVENT_DATE_ANCHOR_DESC" class="btn-group group-fcinfo" showon="items_selection_mode:events">
 					<option value="day">MOD_LYQUIX_ITEMS_TODAY</option>
@@ -220,7 +220,7 @@
 				</field>
 				<field name="fields" type="text" default="" label="MOD_LYQUIX_ITEMS_FIELDS" description="MOD_LYQUIX_ITEMS_FIELDS_DESC" />
 				<field name="fields_class" type="text" default="" label="MOD_LYQUIX_FIELDS_CLASS" description="MOD_LYQUIX_FIELDS_CLASS_DESC" showon="html_json:html,html+json" />
-				
+
 				<field name="" type="separator" default="MOD_LYQUIX_ITEMS_READMORE_PARAMS" level="level2" menu="hide" />
 				<field name="readmore_label" type="text" default="Read More" label="MOD_LYQUIX_ITEMS_READMORE_LABEL" description="MOD_LYQUIX_ITEMS_READMORE_LABEL_DESC" filter="raw" showon="html_json:html,html+json" />
 				<field name="link_type" type="radio" default="item" label="MOD_LYQUIX_ITEMS_LINK_TYPE" description="MOD_LYQUIX_ITEMS_LINK_TYPE_DESC" class="btn-group group-fcinfo">
@@ -229,7 +229,7 @@
 				</field>
 				<field name="link_field" type="fields" default="" field_type="title,text,maintext,textarea,textselect,select,radio,radioimage" fieldnameasvalue="name" label="MOD_LYQUIX_ITEMS_LINK_FIELD" description="MOD_LYQUIX_ITEMS_LINK_FIELD_DESC" showon="link_type:field" />
 				<field name="readmore_class" type="text" default="" label="MOD_LYQUIX_READMORE_CLASS" description="MOD_LYQUIX_READMORE_CLASS_DESC" showon="html_json:html,html+json" />
-				
+
 				<field name="" type="separator" default="MOD_LYQUIX_ITEMS_JSON_PARAMS" level="level2" menu="hide" showon="html_json:json,html+json" />
 				<field name="json_item_id" type="radio" default="0" label="MOD_LYQUIX_ITEMS_JSON_ITEM_ID" description="MOD_LYQUIX_ITEMS_JSON_ITEM_ID_DESC" class="btn-group btn-group-yesno" showon="html_json:json,html+json">
 					<option value="0">MOD_LYQUIX_ITEMS_NO</option>
@@ -286,12 +286,12 @@
 				<field name="css_section_5" type="text" default="" label="MOD_LYQUIX_ITEMS_CSS_SECTION_5" description="MOD_LYQUIX_ITEMS_CSS_SECTION_DESC" />
 				<field name="css_section_6" type="text" default="" label="MOD_LYQUIX_ITEMS_CSS_SECTION_6" description="MOD_LYQUIX_ITEMS_CSS_SECTION_DESC" />
 				<field name="css_section_7" type="text" default="" label="MOD_LYQUIX_ITEMS_CSS_SECTION_7" description="MOD_LYQUIX_ITEMS_CSS_SECTION_DESC" />
-				
+
 				<field name="" type="separator" default="MOD_LYQUIX_ITEMS_CUSTOM_RENDERING" level="level2" menu="hide" />
 				<field name="item_css_func" type="textarea" default="" label="MOD_LYQUIX_ITEMS_CSS_FUNC" description="MOD_LYQUIX_ITEMS_CSS_FUNC_DESC" filter="raw" />
 				<field name="item_attrib_func" type="textarea" default="" label="MOD_LYQUIX_ITEMS_ATTRIB_FUNC" description="MOD_LYQUIX_ITEMS_ATTRIB_FUNC_DESC" filter="raw" />
 				<field name="field_render_func" type="textarea" default="" label="MOD_LYQUIX_ITEMS_FIELDS_RENDERING_FUNC" description="MOD_LYQUIX_ITEMS_FIELDS_RENDERING_FUNC_DESC" filter="raw" />
-				
+
 				<field name="" type="separator" default="MOD_LYQUIX_ITEMS_CACHING" level="level2" menu="hide" />
 				<field name="cache" type="list" default="1" label="MOD_LYQUIX_ITEMS_CACHING" description="MOD_LYQUIX_ITEMS_CACHING_DESC">
 					<option value="1">MOD_LYQUIX_ITEMS_USE_GLOBAL</option>

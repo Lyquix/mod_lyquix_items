@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // are there any items to show?
 if (count($items)) {
-	
+
 	// load required FLEXIcontent libraries
 	require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_flexicontent'.DS.'defineconstants.php');
 	JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_flexicontent'.DS.'tables');
@@ -107,7 +107,7 @@ if (count($items)) {
 			if($params -> get('json_item_id')) $json[$json_idx]['id'] = $id;
 			if($params -> get('json_link')) $json[$json_idx]['url'] = ($link_type == 'item' ? rtrim(JURI::base(), '/') : '') . $item_link;
 		}
-		
+
 		// counts open/close sections
 		$s = 0;
 
@@ -121,7 +121,7 @@ if (count($items)) {
 					if ($params -> get('image_field')) {
 
 						$image = modLyquixItemsHelper::getImage($item, $params -> get('image_field'), $params -> get('image_size', 'l'), $params -> get('image_width', 960), $params -> get('image_height', 540), $params -> get('image_resize', 1));
-						
+
 						// if banner and if the item has video
 						$video_id = '';
 						$banner_video_field = $params -> get('banner_video_field');
@@ -157,7 +157,7 @@ if (count($items)) {
 
 								$html .= '</div>';
 							}
-							
+
 							if($html_json != 'html') {
 								$json[$json_idx]['image']['url'] = rtrim(JURI::base(), '/') . $image['url'];
 								if($image['alt']) $json[$json_idx]['image']['alt'] = $image['alt'];
@@ -202,9 +202,9 @@ if (count($items)) {
 						$item_title = trim(substr($item_title, 0, $params -> get('title_length', 100)));
 						$item_title = substr($item_title, 0, strrpos($item_title, " ")) . "...";
 					}
-					
+
 					if($html_json != 'html') $json[$json_idx]['title'] = $item_title;
-					
+
 					if($html_json != 'json') {
 						// title clickable?
 						if ($params -> get('title_link', 1)) {
@@ -213,25 +213,25 @@ if (count($items)) {
 
 						$html .= '<h' . $params -> get('title_heading_level', 3) . ' class="' . $params -> get('title_class') . '">' . $item_title . '</h' . $params -> get('title_heading_level', 3) . '>';
 					}
-					
+
 					break;
 
 				case 'date' :
 					// Date
 					$item_date = $params -> get('date_label') . JHTML::_('date', $params -> get('date_fields') == 'created' ? $item -> created : $item -> modified, $params -> get('date_format', 'DATE_FORMAT_LC3') != 'custom' ? $params -> get('date_format', 'DATE_FORMAT_LC3') : $params -> get('date_custom'));
-					
+
 					if($html_json != 'json') $html .= '<div class="date ' . $params -> get('date_class') . '">' . $item_date . '</div>';
-					
+
 					if($html_json != 'html') $json[$json_idx]['date'] = $item_date;
-					
+
 					break;
 
 				case 'author' :
 					// Author
 					$item_author = $params -> get('author_label') . ($item -> created_by_alias ? $item -> created_by_alias : $item -> creator);
-					
+
 					if($html_json != 'json') $html .= '<div class="author ' . $params -> get('author_class') . '">' . $item_author . '</div>';
-					
+
 					if($html_json != 'html') $json[$json_idx]['author'] = $item_author;
 
 					break;
@@ -260,7 +260,7 @@ if (count($items)) {
 					// is there intro text?
 					if ($item_introtext) {
 						if($html_json != 'json') $html .= '<div class="field_' . $params -> get('introtext_field', 'description') . ' ' . $params -> get('intro_class') . '">' . $item_introtext . '</div>';
-						
+
 						if($html_json != 'html') $json[$json_idx]['intro'] = $item_introtext;
 					}
 
@@ -275,15 +275,15 @@ if (count($items)) {
 						// process field
 						FlexicontentFields::getFieldDisplay($item, $fieldname);
 						if (isset($item -> fields[$fieldname])) {
-							
+
 							$field = $item -> fields[$fieldname];
-							
+
 							if($html_json != 'json') {
-								
+
 								// render using custom field function
 								$field_html = '';
 								eval($params -> get('field_render_func'));
-							
+
 								if (!$field_html && !(empty($item -> fields[$fieldname] -> display))) {
 										$field_html .= '<div class="field field_' . $fieldname . ' ' . $params -> get('fields_class') . '">';
 										if ($params -> get('fields_label')) {
@@ -291,18 +291,18 @@ if (count($items)) {
 										}
 										$field_html .= $item -> fields[$fieldname] -> display . '</div>';
 								}
-								
+
 								$html .= $field_html;
 
 							}
-							
+
 							if($html_json != 'html') {
 								// add id, label, values and display to json field
 								if($html_json != 'html') $json[$json_idx][$fieldname] = array();
 								if($params -> get('json_field_id')) $json[$json_idx][$fieldname]['id'] = $field -> id;
 								if($params -> get('json_field_label')) $json[$json_idx][$fieldname]['label'] = $field -> label;
 								if($params -> get('json_field_value')) {
-									
+
 									$json[$json_idx][$fieldname]['value'] = $item -> fields[$field -> name] -> iscore ? $item -> {$field -> name} : $item -> fieldvalues [$field -> id];
 									// process serialized data
 									if(is_array($json[$json_idx][$fieldname]['value'])) {
@@ -354,7 +354,7 @@ if (count($items)) {
 
 			// item thumbnail
 			if($banner_layout) {
-				
+
 				$thumbnails .= '<div class="thumbnail">';
 
 				// thumbnail image
@@ -377,7 +377,7 @@ if (count($items)) {
 				}
 
 				$thumbnails .= '</div>';
-				
+
 			}
 
 		}
@@ -388,7 +388,7 @@ if (count($items)) {
 	}
 
 	if($html_json != 'json') {
-		//item list post text 
+		//item list post text
 		$html .= $params -> get('itemlistpostxt');
 		// item list wrapper
 		$html .= '</ul>';
