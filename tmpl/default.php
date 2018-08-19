@@ -419,7 +419,7 @@ if (count($items)) {
 			echo $params -> get('json_callback_func') . '(' . json_encode($json) . ');';
 			if($params -> get('json_document_ready')) echo '});';
 		}
-		else echo 'var ' . $params -> get('json_var_prefix', 'myItems') . $module -> id . ' = ' . json_encode($json) . ';';
+		else echo 'var ' . $params -> get('json_var_prefix', 'myItems') . ($params -> get('json_var_mod_id', '1') ? $module -> id : '') . ' = ' . json_encode($json) . ';';
 		echo '</script>';
 		echo $params -> get('scriptpostxt');
 	}

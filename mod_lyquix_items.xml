@@ -256,6 +256,10 @@
 					<option value="1">MOD_LYQUIX_ITEMS_YES</option>
 				</field>
 				<field name="json_var_prefix" type="text" default="myItems" label="MOD_LYQUIX_ITEMS_JSON_VAR_PREFIX" description="MOD_LYQUIX_ITEMS_JSON_VAR_PREFIX_DESC" filter="raw" showon="html_json:json,html+json" />
+				<field name="json_var_mod_id" type="radio" default="1" label="MOD_LYQUIX_ITEMS_JSON_VAR_MOD_ID" description="MOD_LYQUIX_ITEMS_JSON_VAR_MOD_ID_DESC" class="btn-group btn-group-yesno" showon="html_json:json,html+json">
+					<option value="0">MOD_LYQUIX_ITEMS_NO</option>
+					<option value="1">MOD_LYQUIX_ITEMS_YES</option>
+				</field>
 				<field name="json_callback_func" type="text" default="" label="MOD_LYQUIX_ITEMS_JSON_CALLBACK_FUNC" description="MOD_LYQUIX_ITEMS_JSON_CALLBACK_FUNC_DESC" filter="raw" showon="html_json:json,html+json" />
 				<field name="json_document_ready" type="radio" default="0" label="MOD_LYQUIX_ITEMS_JSON_DOCUMENT_READY" description="MOD_LYQUIX_ITEMS_JSON_DOCUMENT_READY_DESC" class="btn-group btn-group-yesno" showon="html_json:json,html+json">
 					<option value="0">MOD_LYQUIX_ITEMS_NO</option>
