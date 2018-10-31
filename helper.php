@@ -34,8 +34,9 @@ class modLyquixItemsHelper {
 		}
 		
 		// current item scope
-		if($params -> get('item_scope', 1) && JRequest::getVar('option') == 'com_flexicontent' && JRequest::getVar('id') > 0) {
-			$query -> where("c.id <> " . current(explode(":", JRequest::getVar('id'))));
+		preg_match('/(\d+)[:]*(\d*)/', JRequest::getVar('id'), $current_itemid);
+		if ($params -> get('item_scope', 1) && JRequest::getVar('option') == 'com_flexicontent' && array_key_exists(1, $current_itemid)) {
+			$query .= " AND c.id <> " . $current_itemid[1];
 		}
 		
 		// featured item scope
@@ -44,7 +45,6 @@ class modLyquixItemsHelper {
 		} elseif ($params->get('feat_scope') == 2) {
 			$query -> where("c.featured = '0'");
 		}
-		//print_r($query);
 		// language scope
 		if($params -> get('lang_scope', 1)) {
 			$lang = flexicontent_html::getUserCurrentLang();
